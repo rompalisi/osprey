@@ -1,28 +1,38 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.LanguageCode }}">
   {{ partial "head.html" . }}
-  <body>
+  <body style="height: 95vh;">
     {{ partial "body-top" . }}
     <main>
 
       <!-- About -->
+      <div id="about_page">
       {{ partial "about.html" . }}
+      </div>
 
       <!-- Gallery -->
+      <div id="gallery_page">
       {{ if not (eq (len (where .Site.RegularPages "Section" "gallery")) 0) }}
         {{ partial "gallery.html" . }}
       {{ end }}
+      </div>
 
       <!-- Blog -->
+      <div id="blog_page">
       {{ if not (eq (len (where .Site.RegularPages "Section" "blog")) 0) }}
         {{ partial "blog.html" . }}
       {{ end }}
+      </div>
 
       <!-- Contact -->
+      <div id="contact_page">
       {{ partial "contact.html" . }}
+      </div>
 
     </main>
+    <!---
     {{ partial "footer.html" . }}
+    -->
     {{ partial "body-bottom" . }}
   </body>
 </html>

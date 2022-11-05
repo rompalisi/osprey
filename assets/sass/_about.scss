@@ -1,6 +1,11 @@
 .about {
   width: 100%;
   background-color: $smoke;
+  font-family: 'Space Grotesk', sans-serif;
+
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
 
   p {
     @include size(h3);

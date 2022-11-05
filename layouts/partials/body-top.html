@@ -5,15 +5,103 @@
   <!-- End Google Tag Manager (noscript) -->
 {{ end }}
 
+<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/jquery.typeit/4.4.0/typeit.min.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+    $("#home_page").animate({opacity: 1}, {duration: 3000});
+    $('#home_page').typeIt({
+        strings: ["Roman Parise"],
+        speed: 80,
+        autoStart: false
+    });
+    setTimeout(
+        function() {
+            $(".h3_el").animate({opacity: 1}, {duration: 3250});
+        }, 750);
+}
+</script>
+<script type="text/javascript" defer>
+states_in_order = ["Home"];
+{{ range .Site.Menus.main }}
+states_in_order.push("{{ .Name }}");
+{{ end }}
+var global_state = states_in_order[0];
+
+var store;
+var lock = false;
+
+function render_id_str(state) {
+    return "#" + state.toLowerCase() + "_page";
+}
+
+function reducer(state = states_in_order[0], action) {
+    for (let i = 0; i < states_in_order.length; i++) {
+        if (states_in_order[i] === action) {
+            $(render_id_str(state)).animate({'opacity':0}, {duration:1000}).promise().done(() => {
+                $(render_id_str(state)).hide().promise().done(() => {
+                    global_state = states_in_order[i];
+                    render();
+                });
+            });
+        }
+    }
+}
+
+function render(fade = true) {
+    // TODO: remove workaround conditional check and resolve actual problem
+    $(render_id_str(global_state)).show().promise().done(function() {
+        $(render_id_str(global_state)).animate({'opacity':1}, {duration:1000});
+    });
+}
+
+function transition(name) {
+    reducer(global_state, name);
+}
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300&display=swap" rel="stylesheet">
+<title>Roman Parise Personal Site</title>
+<style>
+    #home_page {
+        font-family: 'Space Grotesk', sans-serif;
+        opacity: 1;
+    }
+    .h3_el {
+        font-family: 'Space Grotesk', sans-serif;
+        opacity: 0;
+    }
+    #about_page {
+        opacity: 0;
+        display: none;
+        transform: translate(0, -30vh);
+    }
+    #blog_page {
+        opacity: 0;
+        display: none;
+    }
+    #gallery_page {
+        opacity: 0;
+        display: none;
+    }
+    #contact_page {
+        opacity: 0;
+        display: none;
+        transform: translate(0, -10vh);
+    }
+</style>
+
 {{ if .IsHome }}
   <header class="row middle-xs center-xs">
     <div class="col-xs-12">
       <div class="row middle-xs center-xs">
-        <div class="col-xs-12"><img {{ if .Site.Params.lazyLoading }}data-src="{{ .Site.Params.logoBig }}" lazyload="on"{{ else }}src="{{ .Site.Params.logoBig }}"{{ end }} alt="{{ .Site.Title }}" class="home-logo {{ if .Site.Params.lazyLoading }}lazyload{{ end }}"></div>
+        <h1 id="home_page"></h1>
       </div>
       <div class="row middle-xs center-xs">
         <div class="col-xs-12">
-          <h1>{{ .Site.Params.tagline }}<span class="cursor">|</span></h1>
+          <!---<h1>{{ .Site.Params.tagline }}<span class="cursor">|</span></h1>-->
         </div>
       </div>
     </div>
@@ -26,7 +114,7 @@
   </div>
     {{ range .Site.Menus.main }}
       <div class="col-xs-3 col-sm-2">
-        <h3><a href="{{ .URL }}">{{ .Name }}</a></h3>
+        <h3 class="h3_el"><a onclick="transition('{{ .Name }}')">{{ .Name }}</a></h3>
       </div>
     {{ end }}
   <div class="col-xs-6 col-sm-1 nav-toggle">

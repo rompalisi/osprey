@@ -1,5 +1,13 @@
 <footer class="row middle-xs center-xs">
 
+  <style>
+  .scaledown {
+      transform: scale(0.35, 0.35);
+      -ms-transform: scale(0.35, 0.35);
+      -webkit-transform: scale(0.35, 0.35);
+  }
+  </style>
+
   {{ if .Site.Params.facebook }}
     <div class="col-xs-3 col-md-2"><a target="_blank" rel="noopener" href="https://facebook.com/{{ .Site.Params.facebook }}">{{ i18n "facebook" }}</a></div>
   {{ end }}
@@ -9,7 +17,7 @@
   {{ end }}
 
   {{ if .Site.Params.linkedin }}
-    <div class="col-xs-3 col-md-2"><a target="_blank" rel="noopener" href="https://linkedin.com/in/{{ .Site.Params.linkedin }}">{{ i18n "linkedin" }}</a></div>
+    <div class="col-xs-3 col-md-2"><a target="_blank" rel="noopener" href="https://linkedin.com/in/{{ .Site.Params.linkedin }}"><!---<img {{ if .Site.Params.lazyLoading }}data-src="{{ .Site.Params.linkedinlogo }}" lazyload="on"{{ else }}src="{{ .Site.Params.linkedinlogo }}"{{ end }} alt="{{ .Site.Title }}" class="scaledown home-logo {{ if .Site.Params.lazyLoading }}lazyload{{ end }}">--><img class="scaledown" src="{{ .Site.Params.linkedinlogo }}"></a></div>
   {{ end }}
 
   {{ if .Site.Params.twitter }}
